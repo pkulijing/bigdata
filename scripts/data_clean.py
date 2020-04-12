@@ -13,11 +13,11 @@ def main():
   logging.basicConfig(format=log_format, level=logging.INFO)
 
   object_path = join(original_data_dir, 'objects.csv')
-  objects = pd.read_csv(object_path)
-
-  companies = objects[objects['entity_type'] == 'Company'].loc[:, ['id','name', 
+  objects = pd.read_csv(object_path, usecols=['id','name', 'entity_type', 
     'category_code','status','founded_at','closed_at','tag_list','country_code',
-    'first_funding_at','last_funding_at','funding_rounds','funding_total_usd']]
+    'first_funding_at','last_funding_at','funding_rounds','funding_total_usd'])
+
+  companies = objects[objects['entity_type'] == 'Company']
 
   # only consider companies funded after 1990
   companies = companies.loc[companies.founded_at.apply(lambda s: not pd.isnull(s) and int(str(s)[0:4]) > 1990), :]
