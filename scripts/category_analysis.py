@@ -55,6 +55,17 @@ def main():
   plot_bar(ipo_rate, figure_path('rate_ipo'))
   plot_bar(acquisition_rate, figure_path('rate_acquisition'))
   plot_bar(success_rate, figure_path('rate_success'))
+  
+  category_by_year_path = join(generated_data_dir, 'category_by_year.csv')
+  category_by_year = companies.groupby(['founded_year', 'category_code'])['category_code'].count()
+  category_by_year = pd.DataFrame({
+    'name': category_by_year.index.get_level_values(level=1),
+    'type': ['' for v in category_by_year.values],
+    'value': category_by_year.values,
+    'date': category_by_year.index.get_level_values(level=0)
+  })
+  print(category_by_year.columns)
+  category_by_year.to_csv(category_by_year_path, index=False)
 
 if __name__ == '__main__':
   main()

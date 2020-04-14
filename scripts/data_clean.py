@@ -14,29 +14,18 @@ def main():
 
   object_path = join(original_data_dir, 'objects.csv')
   objects = pd.read_csv(object_path, usecols=['id','name', 'entity_type', 
-    'category_code','status','founded_at','closed_at','tag_list','country_code',
+    'category_code','status','founded_at','closed_at','tag_list','country_code', 'state_code',
     'first_funding_at','last_funding_at','funding_rounds','funding_total_usd'])
 
   companies = objects[objects['entity_type'] == 'Company']
 
-  # only consider companies funded after 1990
-  companies = companies.loc[companies.founded_at.apply(lambda s: not pd.isnull(s) and int(str(s)[0:4]) > 1990), :]
+  # only consider companies founded after 1990 and before 2014 (because the data was generated in 2013)
+  companies = companies.loc[companies.founded_at.apply(lambda s: not pd.isnull(s)), :]
+  companies['founded_year'] = companies['founded_at'].map(lambda s: int(str(s)[0:4]))
+  companies = companies.loc[companies.founded_year.apply(lambda y : y > 1990 and y < 2014), :]
+  
   company_path = join(generated_data_dir, 'companies.csv')
   companies.to_csv(company_path, index=False)
-
-  # ipo_path = join(original_data_dir, 'ipos.csv')
-  # ipos = pd.read_csv(ipo_path)
-
-  # ipos = ipos.loc[ipos.public_at.apply(lambda s: not pd.isnull(s)), :]
-  # ipo_new_path = join(generated_data_dir, 'ipos.csv')
-  # ipos.to_csv(ipo_new_path, index=False)
-
-  # acquisition_path = join(original_data_dir, 'acquisitions.csv')
-  # acquisitions = pd.read_csv(acquisition_path)
-
-  # acquisitions = acquisitions.loc[acquisitions.acquired_at.apply(lambda s: not pd.isnull(s)), :]
-  # acquisition_new_path = join(generated_data_dir, 'acquisitions.csv')
-  # acquisitions.to_csv(acquisition_new_path, index=False)
 
 if __name__ == '__main__':
   main()

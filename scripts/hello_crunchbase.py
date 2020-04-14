@@ -48,30 +48,6 @@ def objects_overall():
 
   return entity_type_counts, category_code_counts
 
-# def objects_divide(entity_types):
-#   '''Divide the objects.csv file into separate files for each entity type
-#   '''
-#   objects_file_path = join(original_data_dir, 'objects.csv')
-
-#   with open(objects_file_path, 'r', newline='') as objects_fd:
-#     objects_reader = DictReader(objects_fd)
-
-#     type_operators = {}
-#     for entity_type in entity_types:
-#       type_file_path = join(generated_data_dir, '{}s.csv'.format(entity_type.lower()))
-#       type_operators[entity_type] = {}
-#       type_operators[entity_type]['fd'] = open(type_file_path, 'w', newline='')
-#       type_operators[entity_type]['writer'] = DictWriter(
-#         type_operators[entity_type]['fd'],
-#         fieldnames=objects_reader.fieldnames)
-#       type_operators[entity_type]['writer'].writeheader()
-
-#     for row in objects_reader:
-#       type_operators[row['entity_type']]['writer'].writerow(row)
-    
-#     for _, v in type_operators.items():
-#       v['fd'].close()
-
 def funding_overall():
   '''Overall information of startups funding
   '''
